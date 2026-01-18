@@ -1,533 +1,454 @@
-<title>Preoperative Clinic Assessment System</title> <style> * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        padding: 20px;
-    }
-    
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-    }
-    
-    .header {
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-        color: white;
-        padding: 30px;
-        text-align: center;
-    }
-    
-    .header h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-    
-    .header p {
-        font-size: 1.1rem;
-        opacity: 0.9;
-    }
-    
-    .content {
-        padding: 30px;
-    }
-    
-    .section {
-        margin-bottom: 40px;
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        border-left: 5px solid #3498db;
-    }
-    
-    .section h2 {
-        color: #2c3e50;
-        font-size: 1.8rem;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .form-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
-    
-    .form-group {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    label {
-        font-weight: 600;
-        color: #34495e;
-        margin-bottom: 8px;
-        font-size: 0.95rem;
-    }
-    
-    input, select, textarea {
-        padding: 12px 15px;
-        border: 2px solid #e1e8ed;
-        border-radius: 10px;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        background: #fafbfc;
-    }
-    
-    input:focus, select:focus, textarea:focus {
-        outline: none;
-        border-color: #3498db;
-        background: white;
-        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-    }
-    
-    textarea {
-        resize: vertical;
-        min-height: 100px;
-    }
-    
-    .checkbox-group {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 15px;
-        margin-top: 10px;
-    }
-    
-    .checkbox-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 15px;
-        background: #f8f9fa;
-        border-radius: 10px;
-        border: 2px solid transparent;
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-    
-    .checkbox-item:hover {
-        background: #e3f2fd;
-        border-color: #3498db;
-    }
-    
-    .checkbox-item input[type="checkbox"] {
-        width: 18px;
-        height: 18px;
-        margin: 0;
-    }
-    
-    .generate-btn {
-        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-        color: white;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 10px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
-        display: block;
-        margin: 30px auto;
-        min-width: 200px;
-    }
-    
-    .generate-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4);
-    }
-    
-    .recommendations {
-        margin-top: 30px;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-radius: 15px;
-        padding: 25px;
-        border: 2px solid #dee2e6;
-        display: none;
-    }
-    
-    .recommendations h3 {
-        color: #2c3e50;
-        font-size: 1.6rem;
-        margin-bottom: 20px;
-        text-align: center;
-    }
-    
-    .rec-category {
-        margin-bottom: 25px;
-        background: white;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .rec-category h4 {
-        color: #e74c3c;
-        font-size: 1.3rem;
-        margin-bottom: 15px;
-        padding-bottom: 8px;
-        border-bottom: 2px solid #f1c40f;
-    }
-    
-    .rec-list {
-        list-style: none;
-        padding: 0;
-    }
-    
-    .rec-list li {
-        padding: 8px 0;
-        border-bottom: 1px solid #ecf0f1;
-        color: #2c3e50;
-        font-weight: 500;
-    }
-    
-    .rec-list li:last-child {
-        border-bottom: none;
-    }
-    
-    .rec-list li::before {
-        content: "✓ ";
-        color: #27ae60;
-        font-weight: bold;
-        margin-right: 8px;
-    }
-    
-    .icon {
-        font-size: 1.2rem;
-    }
-    
-    @media (max-width: 768px) {
-        .form-grid {
-            grid-template-columns: 1fr;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preoperative Assessment | NorthBay Health</title>
+    <meta name="description" content="Comprehensive preoperative patient evaluation and order recommendations system">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'nb-navy': 'oklch(0.22 0.06 260)',
+                        'nb-teal': 'oklch(0.58 0.14 220)',
+                        'nb-green': 'oklch(0.58 0.16 130)',
+                        'nb-green-light': 'oklch(0.72 0.18 125)',
+                        'nb-green-dark': 'oklch(0.42 0.12 155)',
+                    }
+                }
+            }
         }
-        
-        .checkbox-group {
-            grid-template-columns: 1fr;
-        }
-        
-        .header h1 {
-            font-size: 2rem;
-        }
-        
-        .content {
-            padding: 20px;
-        }
-    }
-</style>
-🏥 Preoperative Clinic Assessment
-Comprehensive patient evaluation and order recommendations
-
-    <div class="content">
-        <form id="preopForm">
-            <!-- Patient Information -->
-            <div class="section">
-                <h2><span class="icon">👤</span> Patient Information</h2>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="patientName">Patient Name</label>
-                        <input type="text" id="patientName" name="patientName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="age">Age</label>
-                        <input type="number" id="age" name="age" min="0" max="120" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <select id="gender" name="gender" required>
-                            <option value="">Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="weight">Weight (kg)</label>
-                        <input type="number" id="weight" name="weight" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label for="height">Height (cm)</label>
-                        <input type="number" id="height" name="height">
+    </script>
+</head>
+<body class="min-h-screen bg-slate-50">
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <div class="flex items-center gap-4 sm:gap-6">
+                    <img src="public/northbayhealthlogo.svg" alt="NorthBay Health" class="h-10 sm:h-12 w-auto" />
+                    <div class="hidden sm:block h-8 w-px bg-slate-200"></div>
+                    <div>
+                        <h1 class="text-lg sm:text-xl font-semibold text-slate-800">Preoperative Assessment</h1>
+                        <p class="text-xs sm:text-sm text-slate-500 hidden sm:block">Comprehensive patient evaluation</p>
                     </div>
                 </div>
             </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <form id="preopForm" class="space-y-6">
+            <!-- Patient Information -->
+            <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden transition-shadow hover:shadow-md">
+                <div class="bg-gradient-to-r from-[#0e2657] to-[#1a3a7a] px-5 py-4">
+                    <h2 class="flex items-center gap-3 text-white font-semibold text-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        Patient Information
+                    </h2>
+                </div>
+                <div class="p-5 sm:p-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                        <div class="sm:col-span-2 lg:col-span-1">
+                            <label for="patientName" class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Patient Name <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="patientName"
+                                name="patientName"
+                                required
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009ee0]/30 focus:border-[#009ee0] focus:bg-white hover:border-slate-400"
+                                placeholder="Enter patient name"
+                            />
+                        </div>
+                        <div>
+                            <label for="age" class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Age <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="number"
+                                id="age"
+                                name="age"
+                                min="0"
+                                max="120"
+                                required
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009ee0]/30 focus:border-[#009ee0] focus:bg-white hover:border-slate-400"
+                                placeholder="Years"
+                            />
+                        </div>
+                        <div>
+                            <label for="gender" class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Gender <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="gender"
+                                name="gender"
+                                required
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-slate-900 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009ee0]/30 focus:border-[#009ee0] focus:bg-white hover:border-slate-400 cursor-pointer"
+                            >
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="weight" class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Weight (kg)
+                            </label>
+                            <input
+                                type="number"
+                                id="weight"
+                                name="weight"
+                                step="0.1"
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009ee0]/30 focus:border-[#009ee0] focus:bg-white hover:border-slate-400"
+                                placeholder="kg"
+                            />
+                        </div>
+                        <div>
+                            <label for="height" class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Height (cm)
+                            </label>
+                            <input
+                                type="number"
+                                id="height"
+                                name="height"
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009ee0]/30 focus:border-[#009ee0] focus:bg-white hover:border-slate-400"
+                                placeholder="cm"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <!-- Planned Surgery -->
-            <div class="section">
-                <h2><span class="icon">🔧</span> Planned Surgery</h2>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="surgeryType">Type of Surgery</label>
-                        <select id="surgeryType" name="surgeryType" required>
-                            <option value="">Select Surgery Type</option>
-                            <option value="cardiac">Cardiac Surgery</option>
-                            <option value="orthopedic">Orthopedic Surgery</option>
-                            <option value="abdominal">Abdominal Surgery</option>
-                            <option value="neurological">Neurological Surgery</option>
-                            <option value="thoracic">Thoracic Surgery</option>
-                            <option value="urological">Urological Surgery</option>
-                            <option value="gynecological">Gynecological Surgery</option>
-                            <option value="ent">ENT Surgery</option>
-                            <option value="plastic">Plastic Surgery</option>
-                            <option value="vascular">Vascular Surgery</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="anesthesiaType">Planned Anesthesia</label>
-                        <select id="anesthesiaType" name="anesthesiaType">
-                            <option value="">Select Anesthesia Type</option>
-                            <option value="general">General Anesthesia</option>
-                            <option value="regional">Regional Anesthesia</option>
-                            <option value="local">Local Anesthesia</option>
-                            <option value="sedation">Sedation</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="surgeryDate">Scheduled Surgery Date</label>
-                        <input type="date" id="surgeryDate" name="surgeryDate">
+            <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden transition-shadow hover:shadow-md">
+                <div class="bg-gradient-to-r from-[#0e2657] to-[#1a3a7a] px-5 py-4">
+                    <h2 class="flex items-center gap-3 text-white font-semibold text-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                        Planned Surgery
+                    </h2>
+                </div>
+                <div class="p-5 sm:p-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                        <div>
+                            <label for="surgeryType" class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Type of Surgery <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="surgeryType"
+                                name="surgeryType"
+                                required
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-slate-900 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009ee0]/30 focus:border-[#009ee0] focus:bg-white hover:border-slate-400 cursor-pointer"
+                            >
+                                <option value="">Select Surgery Type</option>
+                                <option value="cardiac">Cardiac Surgery</option>
+                                <option value="orthopedic">Orthopedic Surgery</option>
+                                <option value="abdominal">Abdominal Surgery</option>
+                                <option value="neurological">Neurological Surgery</option>
+                                <option value="thoracic">Thoracic Surgery</option>
+                                <option value="urological">Urological Surgery</option>
+                                <option value="gynecological">Gynecological Surgery</option>
+                                <option value="ent">ENT Surgery</option>
+                                <option value="plastic">Plastic Surgery</option>
+                                <option value="vascular">Vascular Surgery</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="anesthesiaType" class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Planned Anesthesia
+                            </label>
+                            <select
+                                id="anesthesiaType"
+                                name="anesthesiaType"
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-slate-900 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009ee0]/30 focus:border-[#009ee0] focus:bg-white hover:border-slate-400 cursor-pointer"
+                            >
+                                <option value="">Select Anesthesia Type</option>
+                                <option value="general">General Anesthesia</option>
+                                <option value="regional">Regional Anesthesia</option>
+                                <option value="local">Local Anesthesia</option>
+                                <option value="sedation">Sedation</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="surgeryDate" class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Scheduled Surgery Date
+                            </label>
+                            <input
+                                type="date"
+                                id="surgeryDate"
+                                name="surgeryDate"
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-slate-900 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009ee0]/30 focus:border-[#009ee0] focus:bg-white hover:border-slate-400 cursor-pointer"
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- Medical History -->
-            <div class="section">
-                <h2><span class="icon">📋</span> Medical History</h2>
-                <div class="checkbox-group">
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="conditions" value="hypertension">
-                        <span>Hypertension</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="conditions" value="diabetes">
-                        <span>Diabetes Mellitus</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="conditions" value="heart_disease">
-                        <span>Heart Disease</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="conditions" value="copd">
-                        <span>COPD/Asthma</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="conditions" value="kidney_disease">
-                        <span>Kidney Disease</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="conditions" value="liver_disease">
-                        <span>Liver Disease</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="conditions" value="bleeding_disorder">
-                        <span>Bleeding Disorder</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="conditions" value="stroke">
-                        <span>Previous Stroke</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="conditions" value="cancer">
-                        <span>Cancer History</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="conditions" value="anesthesia_complications">
-                        <span>Previous Anesthesia Complications</span>
-                    </label>
+            <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden transition-shadow hover:shadow-md">
+                <div class="bg-gradient-to-r from-[#0e2657] to-[#1a3a7a] px-5 py-4">
+                    <h2 class="flex items-center gap-3 text-white font-semibold text-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                        </svg>
+                        Medical History
+                    </h2>
                 </div>
-                
-                <div class="form-grid" style="margin-top: 20px;">
-                    <div class="form-group">
-                        <label for="medications">Current Medications</label>
-                        <textarea id="medications" name="medications" placeholder="List all current medications..."></textarea>
+                <div class="p-5 sm:p-6">
+                    <p class="text-sm text-slate-600 mb-4">Select all conditions that apply:</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer transition-all duration-200 hover:bg-[#009ee0]/5 hover:border-[#009ee0]/30 checkbox-label">
+                            <input
+                                type="checkbox"
+                                name="conditions"
+                                value="hypertension"
+                                class="w-4 h-4 rounded border-slate-300 text-[#009ee0] focus:ring-[#009ee0] focus:ring-offset-0 cursor-pointer"
+                            />
+                            <span class="text-sm text-slate-700">Hypertension</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer transition-all duration-200 hover:bg-[#009ee0]/5 hover:border-[#009ee0]/30 checkbox-label">
+                            <input
+                                type="checkbox"
+                                name="conditions"
+                                value="diabetes"
+                                class="w-4 h-4 rounded border-slate-300 text-[#009ee0] focus:ring-[#009ee0] focus:ring-offset-0 cursor-pointer"
+                            />
+                            <span class="text-sm text-slate-700">Diabetes Mellitus</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer transition-all duration-200 hover:bg-[#009ee0]/5 hover:border-[#009ee0]/30 checkbox-label">
+                            <input
+                                type="checkbox"
+                                name="conditions"
+                                value="heart_disease"
+                                class="w-4 h-4 rounded border-slate-300 text-[#009ee0] focus:ring-[#009ee0] focus:ring-offset-0 cursor-pointer"
+                            />
+                            <span class="text-sm text-slate-700">Heart Disease</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer transition-all duration-200 hover:bg-[#009ee0]/5 hover:border-[#009ee0]/30 checkbox-label">
+                            <input
+                                type="checkbox"
+                                name="conditions"
+                                value="copd"
+                                class="w-4 h-4 rounded border-slate-300 text-[#009ee0] focus:ring-[#009ee0] focus:ring-offset-0 cursor-pointer"
+                            />
+                            <span class="text-sm text-slate-700">COPD/Asthma</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer transition-all duration-200 hover:bg-[#009ee0]/5 hover:border-[#009ee0]/30 checkbox-label">
+                            <input
+                                type="checkbox"
+                                name="conditions"
+                                value="kidney_disease"
+                                class="w-4 h-4 rounded border-slate-300 text-[#009ee0] focus:ring-[#009ee0] focus:ring-offset-0 cursor-pointer"
+                            />
+                            <span class="text-sm text-slate-700">Kidney Disease</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer transition-all duration-200 hover:bg-[#009ee0]/5 hover:border-[#009ee0]/30 checkbox-label">
+                            <input
+                                type="checkbox"
+                                name="conditions"
+                                value="liver_disease"
+                                class="w-4 h-4 rounded border-slate-300 text-[#009ee0] focus:ring-[#009ee0] focus:ring-offset-0 cursor-pointer"
+                            />
+                            <span class="text-sm text-slate-700">Liver Disease</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer transition-all duration-200 hover:bg-[#009ee0]/5 hover:border-[#009ee0]/30 checkbox-label">
+                            <input
+                                type="checkbox"
+                                name="conditions"
+                                value="bleeding_disorder"
+                                class="w-4 h-4 rounded border-slate-300 text-[#009ee0] focus:ring-[#009ee0] focus:ring-offset-0 cursor-pointer"
+                            />
+                            <span class="text-sm text-slate-700">Bleeding Disorder</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer transition-all duration-200 hover:bg-[#009ee0]/5 hover:border-[#009ee0]/30 checkbox-label">
+                            <input
+                                type="checkbox"
+                                name="conditions"
+                                value="stroke"
+                                class="w-4 h-4 rounded border-slate-300 text-[#009ee0] focus:ring-[#009ee0] focus:ring-offset-0 cursor-pointer"
+                            />
+                            <span class="text-sm text-slate-700">Previous Stroke</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer transition-all duration-200 hover:bg-[#009ee0]/5 hover:border-[#009ee0]/30 checkbox-label">
+                            <input
+                                type="checkbox"
+                                name="conditions"
+                                value="cancer"
+                                class="w-4 h-4 rounded border-slate-300 text-[#009ee0] focus:ring-[#009ee0] focus:ring-offset-0 cursor-pointer"
+                            />
+                            <span class="text-sm text-slate-700">Cancer History</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer transition-all duration-200 hover:bg-[#009ee0]/5 hover:border-[#009ee0]/30 checkbox-label">
+                            <input
+                                type="checkbox"
+                                name="conditions"
+                                value="anesthesia_complications"
+                                class="w-4 h-4 rounded border-slate-300 text-[#009ee0] focus:ring-[#009ee0] focus:ring-offset-0 cursor-pointer"
+                            />
+                            <span class="text-sm text-slate-700">Previous Anesthesia Complications</span>
+                        </label>
                     </div>
-                    <div class="form-group">
-                        <label for="allergies">Allergies</label>
-                        <textarea id="allergies" name="allergies" placeholder="List all known allergies..."></textarea>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mt-6">
+                        <div>
+                            <label for="medications" class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Current Medications
+                            </label>
+                            <textarea
+                                id="medications"
+                                name="medications"
+                                rows="4"
+                                placeholder="List all current medications..."
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009ee0]/30 focus:border-[#009ee0] focus:bg-white hover:border-slate-400 resize-y"
+                            ></textarea>
+                        </div>
+                        <div>
+                            <label for="allergies" class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Allergies
+                            </label>
+                            <textarea
+                                id="allergies"
+                                name="allergies"
+                                rows="4"
+                                placeholder="List all known allergies..."
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009ee0]/30 focus:border-[#009ee0] focus:bg-white hover:border-slate-400 resize-y"
+                            ></textarea>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- Functional Status -->
-            <div class="section">
-                <h2><span class="icon">🏃</span> Functional Status</h2>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="functionalCapacity">Functional Capacity (METs)</label>
-                        <select id="functionalCapacity" name="functionalCapacity">
-                            <option value="">Select Functional Capacity</option>
-                            <option value="poor">Poor (&lt;4 METs)</option>
-                            <option value="moderate">Moderate (4-10 METs)</option>
-                            <option value="excellent">Excellent (&gt;10 METs)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="smokingStatus">Smoking Status</label>
-                        <select id="smokingStatus" name="smokingStatus">
-                            <option value="">Select Status</option>
-                            <option value="never">Never Smoked</option>
-                            <option value="former">Former Smoker</option>
-                            <option value="current">Current Smoker</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="alcoholUse">Alcohol Use</label>
-                        <select id="alcoholUse" name="alcoholUse">
-                            <option value="">Select Usage</option>
-                            <option value="none">None</option>
-                            <option value="social">Social Drinking</option>
-                            <option value="moderate">Moderate Use</option>
-                            <option value="heavy">Heavy Use</option>
-                        </select>
+            <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden transition-shadow hover:shadow-md">
+                <div class="bg-gradient-to-r from-[#0e2657] to-[#1a3a7a] px-5 py-4">
+                    <h2 class="flex items-center gap-3 text-white font-semibold text-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        Functional Status
+                    </h2>
+                </div>
+                <div class="p-5 sm:p-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                        <div>
+                            <label for="functionalCapacity" class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Functional Capacity (METs)
+                            </label>
+                            <select
+                                id="functionalCapacity"
+                                name="functionalCapacity"
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-slate-900 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009ee0]/30 focus:border-[#009ee0] focus:bg-white hover:border-slate-400 cursor-pointer"
+                            >
+                                <option value="">Select Functional Capacity</option>
+                                <option value="poor">Poor (&lt;4 METs)</option>
+                                <option value="moderate">Moderate (4-10 METs)</option>
+                                <option value="excellent">Excellent (&gt;10 METs)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="smokingStatus" class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Smoking Status
+                            </label>
+                            <select
+                                id="smokingStatus"
+                                name="smokingStatus"
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-slate-900 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009ee0]/30 focus:border-[#009ee0] focus:bg-white hover:border-slate-400 cursor-pointer"
+                            >
+                                <option value="">Select Status</option>
+                                <option value="never">Never Smoked</option>
+                                <option value="former">Former Smoker</option>
+                                <option value="current">Current Smoker</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="alcoholUse" class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Alcohol Use
+                            </label>
+                            <select
+                                id="alcoholUse"
+                                name="alcoholUse"
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-slate-900 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009ee0]/30 focus:border-[#009ee0] focus:bg-white hover:border-slate-400 cursor-pointer"
+                            >
+                                <option value="">Select Usage</option>
+                                <option value="none">None</option>
+                                <option value="social">Social Drinking</option>
+                                <option value="moderate">Moderate Use</option>
+                                <option value="heavy">Heavy Use</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <button type="button" class="generate-btn" onclick="generateRecommendations()">Generate Preoperative Orders</button>
+            <!-- Generate Button -->
+            <div class="flex justify-center pt-2">
+                <button
+                    type="button"
+                    onclick="generateRecommendations()"
+                    class="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-[#6ba818] to-[#8bc34a] text-white font-semibold rounded-xl shadow-lg shadow-[#6ba818]/25 transition-all duration-200 hover:shadow-xl hover:shadow-[#6ba818]/30 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[#6ba818] focus:ring-offset-2 active:translate-y-0"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Generate Preoperative Orders
+                </button>
+            </div>
         </form>
 
-        <div id="recommendations" class="recommendations">
-            <h3>🎯 Recommended Preoperative Orders</h3>
-            <div id="recommendationsContent"></div>
+        <!-- Recommendations Results -->
+        <div
+            id="recommendations"
+            class="mt-8 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hidden"
+        >
+            <div class="bg-gradient-to-r from-[#008045] to-[#6ba818] px-5 py-4">
+                <h3 class="flex items-center gap-3 text-white font-semibold text-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Recommended Preoperative Orders
+                </h3>
+            </div>
+            <div id="recommendationsContent" class="p-5 sm:p-6 space-y-5">
+            </div>
         </div>
-    </div>
-</div>
+    </main>
 
-<script>
-    function generateRecommendations() {
-        // Get form data
-        const age = parseInt(document.getElementById('age').value) || 0;
-        const surgery = document.getElementById('surgeryType').value;
-        const anesthesia = document.getElementById('anesthesiaType').value;
+    <!-- Footer -->
+    <footer class="mt-8 border-t border-slate-200 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <p class="text-center text-sm text-slate-500">
+                © <span id="currentYear"></span> NorthBay Health. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script src="assets/js/app.js"></script>
+    <script>
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
         
-        // Get checked conditions
-        const conditions = Array.from(document.querySelectorAll('input[name="conditions"]:checked'))
-            .map(cb => cb.value);
-        
-        let html = '';
-        
-        // Laboratory Studies
-        html += `
-            <div class="rec-category">
-                <h4>🧪 Laboratory Studies</h4>
-                <ul class="rec-list">
-                    <li>Complete Blood Count (CBC)</li>
-                    <li>Basic Metabolic Panel (BMP)</li>
-        `;
-        
-        if (age >= 50 || conditions.includes('diabetes') || conditions.includes('kidney_disease')) {
-            html += `<li>Comprehensive Metabolic Panel (CMP)</li>`;
-        }
-        
-        if (conditions.includes('bleeding_disorder') || surgery === 'cardiac' || surgery === 'neurological') {
-            html += `<li>PT/PTT/INR</li>`;
-        }
-        
-        if (surgery === 'cardiac' || surgery === 'orthopedic' || surgery === 'abdominal') {
-            html += `<li>Type and Screen</li>`;
-        }
-        
-        if (conditions.includes('diabetes')) {
-            html += `<li>HbA1c</li>`;
-        }
-        
-        if (conditions.includes('liver_disease')) {
-            html += `<li>Liver Function Tests</li>`;
-        }
-        
-        html += `</ul></div>`;
-        
-        // Diagnostic Studies
-        html += `
-            <div class="rec-category">
-                <h4>📊 Diagnostic Studies</h4>
-                <ul class="rec-list">
-        `;
-        
-        if (age >= 40 || conditions.includes('heart_disease') || conditions.includes('hypertension')) {
-            html += `<li>ECG (Electrocardiogram)</li>`;
-        }
-        
-        if (conditions.includes('heart_disease') || surgery === 'cardiac') {
-            html += `<li>Echocardiogram</li>`;
-        }
-        
-        if (conditions.includes('copd')) {
-            html += `<li>Pulmonary Function Tests</li>`;
-        }
-        
-        html += `</ul></div>`;
-        
-        // Imaging Studies
-        html += `
-            <div class="rec-category">
-                <h4>📷 Imaging Studies</h4>
-                <ul class="rec-list">
-        `;
-        
-        if (age >= 60 || conditions.includes('copd') || surgery === 'thoracic' || surgery === 'cardiac') {
-            html += `<li>Chest X-ray</li>`;
-        }
-        
-        if (surgery === 'orthopedic') {
-            html += `<li>X-rays of surgical site</li>`;
-        }
-        
-        html += `</ul></div>`;
-        
-        // Consultations
-        if (conditions.length > 0) {
-            html += `
-                <div class="rec-category">
-                    <h4>👨‍⚕️ Specialist Consultations</h4>
-                    <ul class="rec-list">
-            `;
-            
-            if (conditions.includes('heart_disease')) {
-                html += `<li>Cardiology Consultation</li>`;
-            }
-            
-            if (conditions.includes('copd')) {
-                html += `<li>Pulmonology Consultation</li>`;
-            }
-            
-            if (conditions.includes('kidney_disease')) {
-                html += `<li>Nephrology Consultation</li>`;
-            }
-            
-            if (conditions.includes('diabetes') && age >= 65) {
-                html += `<li>Endocrinology Consultation (if poorly controlled)</li>`;
-            }
-            
-            html += `</ul></div>`;
-        }
-        
-        // Medications
-        html += `
-            <div class="rec-category">
-                <h4>💊 Medication Management</h4>
-                <ul class="rec-list">
-                    <li>Review all current medications</li>
-                    <li>Consider holding anticoagulants per protocol</li>
-                    <li>Continue beta-blockers and statins if prescribed</li>
-        `;
-        
-        if (conditions.includes('diabetes')) {
-            html += `<li>Adjust diabetes medications per anesthesia protocol</li>`;
-        }
-        
-        html += `</ul></div>`;
-        
-        // Set the content and show recommendations
-        document.getElementById('recommendationsContent').innerHTML = html;
-        document.getElementById('recommendations').style.display = 'block';
-        document.getElementById('recommendations').scrollIntoView({ behavior: 'smooth' });
-    }
-</script>
+        // Add checkbox checked styling
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const label = this.closest('label');
+                if (this.checked) {
+                    label.classList.add('bg-[#009ee0]/10', 'border-[#009ee0]');
+                } else {
+                    label.classList.remove('bg-[#009ee0]/10', 'border-[#009ee0]');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
