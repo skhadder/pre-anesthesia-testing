@@ -27,11 +27,11 @@ function generateRecommendations() {
     const hasStimulantUseWithin5Years = substanceAbuse && substanceAbuse.value === 'yes' && 
                                         stimulantUseWithin5Years && stimulantUseWithin5Years.value === 'yes';
 
-    // BMI-based trigger (BMI > 30)
+    // BMI-based trigger (BMI >= 39)
     const bmiCalcResult = calculateBMI();
-    const bmiOver35 = bmiCalcResult.value !== null && bmiCalcResult.value >= 35;
+    const bmiOver39 = bmiCalcResult.value !== null && bmiCalcResult.value >= 39;
 
-    const surgeryTriggersCBCNoDiff = ['craniotomy', 'abdominal', 'orthopedic', 'major_spine', 'thoracic', 'vascular', 'peritoneal_dialysis'];
+    const surgeryTriggersCBCNoDiff = ['craniotomy', 'abdominal', 'major_spine', 'thoracic', 'vascular', 'peritoneal_dialysis'];
     if (age >= 50 || 
         conditions.includes('neurological_disease') || 
         isOnAnticoagulant || 
@@ -41,7 +41,7 @@ function generateRecommendations() {
         conditions.includes('copd') || 
         conditions.includes('sleep_apnea') || 
         conditions.includes('vascular_disease') || 
-        bmiOver35 ||
+        bmiOver39 ||
         conditions.includes('diabetes') ||
         conditions.includes('kidney_disease') || 
         conditions.includes('liver_disease') || 
@@ -59,7 +59,7 @@ function generateRecommendations() {
     const surgeryTriggersCMP = ['major_spine', 'craniotomy', 'abdominal', 'vascular', 'thoracic'];
     const willTriggerCMP = conditions.includes('heart_disease') || hasPacemakerOrAICD || surgeryTriggersCMP.includes(surgery);
     
-    // BMP triggers: General cardiac disease, cocaine/meth use, current chemotherapy, liver disease, neurological disease, BMI >30, kidney disease, steroid use, vascular disease, orthopedic surgery, or Diuretics/Digoxin/ACEi/ARB medications
+    // BMP triggers: General cardiac disease, cocaine/meth use, current chemotherapy, liver disease, neurological disease, BMI >= 39, kidney disease, steroid use, vascular disease, or Diuretics/Digoxin/ACEi/ARB medications
     // Note: Do not add BMP if CMP is already triggered (CMP includes all BMP tests plus additional ones)
     const diureticsDigoxinAceiArb = document.querySelector('input[name="diureticsDigoxinAceiArb"]:checked');
     const takesDiureticsDigoxinAceiArb = diureticsDigoxinAceiArb && diureticsDigoxinAceiArb.value === 'yes';
@@ -76,10 +76,9 @@ function generateRecommendations() {
                conditions.includes('diabetes') ||
                conditions.includes('liver_disease') ||
                conditions.includes('neurological_disease') ||
-               bmiOver35 ||
+               bmiOver39 ||
                takesSteroidMedications ||
                conditions.includes('vascular_disease') ||
-               surgery === 'orthopedic' ||
                takesDiureticsDigoxinAceiArb)) {
         labTests.push('Basic Metabolic Panel (BMP)');
     }
@@ -99,23 +98,23 @@ function generateRecommendations() {
         labTests.push('BMP (DOS, K+<5.6, HCO3>11)');
     }
 
-    // PT/PTT/INR for bleeding disorder, liver disease, orthopedic/major spine/craniotomy/vascular/thoracic surgery, or Coumadin
-    const surgeryTriggersPTINR = ['orthopedic', 'major_spine', 'craniotomy', 'vascular', 'thoracic'];
+    // PT/PTT/INR for bleeding disorder, liver disease, major spine/craniotomy/vascular/thoracic surgery, or Coumadin
+    const surgeryTriggersPTINR = ['major_spine', 'craniotomy', 'vascular', 'thoracic'];
     if (conditions.includes('bleeding_disorder') || conditions.includes('liver_disease') || surgeryTriggersPTINR.includes(surgery)) {
         labTests.push('PT/PTT/INR');
     }
     
-    // Type and Screen triggers: orthopedic/vascular/thoracic surgery OR anemia with Hct <28
+    // Type and Screen triggers: vascular/thoracic surgery OR anemia with Hct <28
     const hctLow = document.querySelector('input[name="hctLow"]:checked');
     const hasLowHct = hctLow && hctLow.value === 'yes';
     const hasAnemia = conditions.includes('anemia');
     
-    if (surgery === 'orthopedic' || surgery === 'vascular' || surgery === 'thoracic' || (hasAnemia && hasLowHct)) {
+    if (surgery === 'vascular' || surgery === 'thoracic' || (hasAnemia && hasLowHct)) {
         labTests.push('Type and Screen');
     }
     
-    // UA (Urinalysis) triggered by orthopedic surgery or major spine surgery (not craniotomy)
-    if (surgery === 'orthopedic' || surgery === 'major_spine') {
+    // UA (Urinalysis) triggered by major spine surgery (not craniotomy)
+    if (surgery === 'major_spine') {
         labTests.push('UA (Urinalysis)');
     }
     
@@ -140,13 +139,13 @@ function generateRecommendations() {
     // - Pulmonary Disease (COPD): always triggers ECG
     // - Sleep Apnea: always triggers ECG
     // - Vascular Disease: always triggers ECG
-    // - Obesity (BMI >39): always triggers ECG
+    // - Obesity (BMI >= 39): always triggers ECG
     // - Diabetes: always triggers ECG
     // - Kidney Disease: always triggers ECG
     // - Stimulant Use within 5 years: always triggers ECG
     // - General age >= 50: always triggers ECG
     // - General Cardiac Disease (hypertension): triggers ECG if age > 48 (age >= 49)
-    // - Surgery types: major spine, craniotomy, abdominal, orthopedic, vascular, thoracic
+    // - Surgery types: major spine, craniotomy, abdominal, vascular, thoracic
     const hasHypertension = conditions.includes('hypertension');
     const hasHeartDisease = conditions.includes('heart_disease');
     const hasNeurologicalDisease = conditions.includes('neurological_disease');
@@ -155,24 +154,25 @@ function generateRecommendations() {
     const hasVascularDisease = conditions.includes('vascular_disease');
     const hasDiabetes = conditions.includes('diabetes');
     const hasKidneyDisease = conditions.includes('kidney_disease');
-    const surgeryTriggersECG = ['major_spine', 'craniotomy', 'abdominal', 'orthopedic', 'vascular', 'thoracic'];
+    const surgeryTriggersECG = ['major_spine', 'craniotomy', 'abdominal', 'vascular', 'thoracic'];
+    const ecgLabel = 'ECG (if no ECG on file in the last 6 months)';
     
     // Peritoneal Dialysis Catheter: ECG
     if (surgery === 'peritoneal_dialysis') {
-        diagnosticTests.push('ECG (Electrocardiogram)');
+        diagnosticTests.push(ecgLabel);
     } else if (hasHeartDisease ||
         hasNeurologicalDisease ||
         hasPulmonaryDisease ||
         hasSleepApnea ||
         hasVascularDisease ||
         hasDiabetes ||
-        bmiOver35 ||
+        bmiOver39 ||
         hasKidneyDisease ||
         hasStimulantUseWithin5Years ||
         age >= 50 || 
         (hasHypertension && age >= 49) ||
         surgeryTriggersECG.includes(surgery)) {
-        diagnosticTests.push('ECG (Electrocardiogram)');
+        diagnosticTests.push(ecgLabel);
     }
     
     if (conditions.includes('heart_disease')) {
@@ -196,10 +196,6 @@ function generateRecommendations() {
         imagingTests.push('Chest X-ray (DOS if sat<95% or O2 requirement)');
     } else if (heartDiseaseWithSobDoe || copdWithSobDoe || surgery === 'thoracic') {
         imagingTests.push('Chest X-ray');
-    }
-    
-    if (surgery === 'orthopedic') {
-        imagingTests.push('X-rays of surgical site');
     }
     
     if (imagingTests.length > 0) {
